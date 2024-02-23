@@ -7,6 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
+
   integration:
     runs-on: ubuntu-latest
     steps:
@@ -14,6 +15,7 @@ jobs:
       - run: echo "- Lint the code and run unit tests"
         
   build:
+    needs: integration
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -27,11 +29,13 @@ jobs:
       - run: echo "- Simulate and test the artifact"
 
   development:
+    needs: test-artifact
     runs-on: ubuntu-latest
     steps:
       - run: echo "- Auto-deploy the artifact to the development environment"
         
   staging:
+    needs: development
     runs-on: ubuntu-latest
     steps:
       - run: |
